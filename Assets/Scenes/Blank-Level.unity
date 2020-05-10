@@ -1144,9 +1144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0453e6d0a4318f94cbdffd8a76e8bde1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSenstivity: 0.005
   changingLengthSenstivity: 0.0001
   arrow: {fileID: 1637834019}
+  dist: 0
 --- !u!1 &1637834019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,6 +1197,8 @@ MonoBehaviour:
   - {fileID: 1290653380}
   - {fileID: 1958468357}
   - {fileID: 2114772728}
+  maxValueToMove: 0.09
+  minValue: 0.09
 --- !u!1 &1958468357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,7 +1351,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.078389965, g: 1, b: 0.07075471, a: 1}
+  m_Color: {r: 0.008438826, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
