@@ -1144,9 +1144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0453e6d0a4318f94cbdffd8a76e8bde1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changingLengthSenstivity: 0.0001
   arrow: {fileID: 1637834019}
   dist: 0
+  raduis: 40
 --- !u!1 &1637834019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,8 +1197,6 @@ MonoBehaviour:
   - {fileID: 1290653380}
   - {fileID: 1958468357}
   - {fileID: 2114772728}
-  maxValueToMove: 0.09
-  minValue: 0.09
 --- !u!1 &1958468357
 GameObject:
   m_ObjectHideFlags: 0

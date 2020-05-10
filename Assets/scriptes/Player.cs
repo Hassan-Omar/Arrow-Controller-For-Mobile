@@ -11,7 +11,13 @@ public class Player : MonoBehaviour
     // temp value to hold the last distance between player , touch in the frame no n-1 
     public float dist;
     // hold the reduis of effective area around touched point 
-    public float raduis= 300; 
+    public float Outerraduis = 40;
+    public float Inneraduis = 10;
+
+    // flag to tell me if the moving directon changed 
+    private bool changeDirectionFlage;
+    private bool tempFlag;
+    private Vector2 lastStopPosition;
 
     private void Update()
     {
@@ -41,22 +47,35 @@ public class Player : MonoBehaviour
 
                     // calculate value for and new length to update arrow 
                     float lengthValue = Vector2.Distance(startTouchPos, touch.position);
-                    //Debug.Log("/|/|  " + lengthValue);
+                    
                     // update arrow's length   
                     Vector3 pointInWorld = Camera.main.ScreenToWorldPoint(touch.position);
+                    
                     if (CheckDirection(new Vector2(pointInWorld.x, pointInWorld.y)))
                     { 
-                      
+                        if(!tempFlag)
+                        {
+                            lastStopPosition = touch.position;
+                            Debug.Log("Changed");
+                        }
+                        if(Vector2.Distance(lastStopPosition,touch.position)<Outerraduis )
+                        {
+                            tempFlag = true;
                             // decrease Arrow Length 
-                            Arrow.Instance.updateLength(0.003f * lengthValue, -1);
-                            Debug.Log("Toward");
-                       
+                            Arrow.Instance.updateLength(0.00005f * lengthValue, -1);
+                            //Debug.Log("Toward   "+ Vector2.Distance(lastStopPosition, touch.position));
+                        }
                     }
                     else
                     {
+                        if(lengthValue<Outerraduis)
+                        {
+                            tempFlag = false;
                             // increase Arrow Length 
-                            Arrow.Instance.updateLength(0.003f*lengthValue, 1);
-                            Debug.Log("Away");
+                            Arrow.Instance.updateLength(0.5f*Time.deltaTime * lengthValue, 1);
+                            //Debug.Log(0.003f *lengthValue+ "   "+0.5f*lengthValue*Time.deltaTime);
+                            
+                        }
                        
                     }
                     break;
