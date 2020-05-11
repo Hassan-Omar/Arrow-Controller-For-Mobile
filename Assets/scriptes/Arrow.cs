@@ -40,4 +40,8 @@ public class Arrow : MonoBehaviour
         arrowPoints[2].transform.localPosition = new Vector3(0, 0.21f, 0);
     }
 
+    public float getLength()
+    {
+        return Mathf.Abs(arrowPoints[2].transform.localPosition.y - arrowPoints[0].transform.localPosition.y);
+    }
 }

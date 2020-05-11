@@ -19,6 +19,11 @@ public class Player : MonoBehaviour
     private bool tempFlag;
     private Vector2 lastStopPosition;
 
+    private Rigidbody2D rb;
+    private void Start()
+    {
+         rb = transform.GetComponent<Rigidbody2D>();
+    }
     private void Update()
     {
         // prevent calling if we have no touching 
@@ -29,6 +34,7 @@ public class Player : MonoBehaviour
             switch (touch.phase)
             {
                 case TouchPhase.Began:
+                    Time.timeScale = 0.25f;
                     // Record initial touch position.
                     startTouchPos = touch.position;
                      break;
@@ -37,7 +43,7 @@ public class Player : MonoBehaviour
                 case TouchPhase.Moved:
                     arrow.SetActive(true);
                     // apply slow motion effect 
-                    Time.timeScale = 0.5f;
+                    Time.timeScale = 0.1f;
                     
                     // rotate the arrow opposite to current touched point 
                     Vector3 diff = Camera.main.ScreenToWorldPoint(touch.position) - transform.position;
@@ -84,10 +90,13 @@ public class Player : MonoBehaviour
                     // end slow motion effect 
                     Time.timeScale = 1;
                     arrow.SetActive(false);
+                    // here we will project the player 
+                    projecteThePlayer(arrow.transform.up, 400);
+                   
                     // reset arrow's lengh 
                     Arrow.Instance.resetToStartLenght();
                     arrow.transform.localRotation = Quaternion.identity;
-                    // here we will project the player 
+                    
                     break;
             }
         }
@@ -112,5 +121,21 @@ public class Player : MonoBehaviour
             dist = distTemp;
             return false;
         }
+    }
+
+    /// <summary>
+    /// function to projecte the player in direction of the arrow 
+    /// </summary>
+    /// <param name="direction">direction of the arrow </param>
+    /// <param name="force">value of the force to move the cube </param>
+    private void projecteThePlayer(Vector2 direction,int force)
+    {
+        rb.AddForce(direction * force * Arrow.Instance.getLength());
+        rb.gravityScale = 1; 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
     }
 }
