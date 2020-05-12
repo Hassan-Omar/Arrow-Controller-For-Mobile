@@ -1495,10 +1495,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0453e6d0a4318f94cbdffd8a76e8bde1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sensetivity: 0.005
   arrow: {fileID: 1637834019}
   dist: 0
-  Outerraduis: 40
-  Inneraduis: 10
 --- !u!1 &1637834019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1545,6 +1544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f48bef887f57964e846d2fdad351221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLength: 0
+  minLength: 0
   arrowPoints:
   - {fileID: 1290653380}
   - {fileID: 1958468357}

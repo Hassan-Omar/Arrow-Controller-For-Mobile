@@ -4,22 +4,17 @@
 /// </summary>
 public class Player : MonoBehaviour
 {
+    [SerializeField] float sensetivity = 0.005f;
     // to keep first touch position relative to screen coordinates 
     private Vector2 startTouchPos;
     // reference to arrow to activation or deactivation 
     [SerializeField] GameObject arrow;
     // temp value to hold the last distance between player , touch in the frame no n-1 
     public float dist;
-    // hold the reduis of effective area around touched point 
-    public float Outerraduis = 40;
-    public float Inneraduis = 10;
-
-    // flag to tell me if the moving directon changed 
-    private bool changeDirectionFlage;
-    private bool tempFlag;
-    private Vector2 lastStopPosition;
-
+    // hold the rigid body of the player 
     private Rigidbody2D rb;
+
+
     private void Start()
     {
          rb = transform.GetComponent<Rigidbody2D>();
@@ -34,17 +29,17 @@ public class Player : MonoBehaviour
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    Time.timeScale = 0.25f;
+                    Time.timeScale = 0.2f;
+                    rb.gravityScale = 0.25f;
                     // Record initial touch position.
                     startTouchPos = touch.position;
-                     break;
+                    break;
 
                 //Determine if the touch is a moving touch
                 case TouchPhase.Moved:
                     arrow.SetActive(true);
                     // apply slow motion effect 
-                    Time.timeScale = 0.1f;
-                    
+
                     // rotate the arrow opposite to current touched point 
                     Vector3 diff = Camera.main.ScreenToWorldPoint(touch.position) - transform.position;
                     diff.Normalize();
@@ -53,34 +48,24 @@ public class Player : MonoBehaviour
 
                     // calculate value for and new length to update arrow 
                     float lengthValue = Vector2.Distance(startTouchPos, touch.position);
-                    
-                    // update arrow's length   
+
+                    // map touched point to world space   
                     Vector3 pointInWorld = Camera.main.ScreenToWorldPoint(touch.position);
-                    
+
                     if (CheckDirection(new Vector2(pointInWorld.x, pointInWorld.y)))
-                    { 
-                        if(!tempFlag)
+                    {
+                        if (Arrow.Instance.getLength() > Arrow.Instance.minLength)
                         {
-                            lastStopPosition = touch.position;
-                            Debug.Log("Changed");
-                        }
-                        if(Vector2.Distance(lastStopPosition,touch.position)<Outerraduis )
-                        {
-                            tempFlag = true;
                             // decrease Arrow Length 
-                            Arrow.Instance.updateLength(0.00005f * lengthValue, -1);
-                            //Debug.Log("Toward   "+ Vector2.Distance(lastStopPosition, touch.position));
+                            Arrow.Instance.updateLength(sensetivity * Time.deltaTime * lengthValue, -1);
                         }
                     }
                     else
                     {
-                        if(lengthValue<Outerraduis)
+                        if (Arrow.Instance.getLength()<Arrow.Instance.maxLength)
                         {
-                            tempFlag = false;
                             // increase Arrow Length 
-                            Arrow.Instance.updateLength(0.5f*Time.deltaTime * lengthValue, 1);
-                            //Debug.Log(0.003f *lengthValue+ "   "+0.5f*lengthValue*Time.deltaTime);
-                            
+                            Arrow.Instance.updateLength(sensetivity * Time.deltaTime * lengthValue, 1);
                         }
                        
                     }
@@ -89,6 +74,7 @@ public class Player : MonoBehaviour
                 case TouchPhase.Ended:
                     // end slow motion effect 
                     Time.timeScale = 1;
+                    rb.gravityScale = 1;
                     arrow.SetActive(false);
                     // here we will project the player 
                     projecteThePlayer(arrow.transform.up, 400);
@@ -100,9 +86,9 @@ public class Player : MonoBehaviour
                     break;
             }
         }
-     }
+    }
 
-    
+
     /// <summary>
     /// function to check if the user moving towards the cube or not 
     /// </summary>
@@ -110,7 +96,7 @@ public class Player : MonoBehaviour
     /// <returns> true if we move touched point towards to the player </returns>
     private bool CheckDirection(Vector2 pointPos)
     {
-        float distTemp = Vector2.Distance(pointPos, new Vector3(transform.position.x,transform.position.y));
+        float distTemp = Vector2.Distance(pointPos, new Vector2(transform.position.x, transform.position.y));
         if (distTemp < dist)
         {
             dist = distTemp;
@@ -122,6 +108,7 @@ public class Player : MonoBehaviour
             return false;
         }
     }
+    
 
     /// <summary>
     /// function to projecte the player in direction of the arrow 

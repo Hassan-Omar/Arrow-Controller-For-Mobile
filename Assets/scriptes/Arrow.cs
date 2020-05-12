@@ -4,15 +4,19 @@
 /// </summary>
 public class Arrow : MonoBehaviour
 {
+    public float maxLength =0.216f;
+    public float minLength = 0.0757f;
     [SerializeField] GameObject[] arrowPoints;
-     
+    
     // static object for external access only 
     public static Arrow Instance;
     private void Awake()
     {
         if(Instance==null)
         {
-            Instance = this; 
+            this.maxLength = 0.216f;
+            this.minLength = 0.0757f;
+            Instance = this;
         }
     }
 
@@ -28,7 +32,6 @@ public class Arrow : MonoBehaviour
         // I should Move last point and second will be in the middle 
         arrowPoints[2].transform.localPosition += new Vector3(0, value, 0)* direction;
         arrowPoints[1].transform.localPosition += 0.5f * new Vector3(0, value, 0)* direction;
-        //Debug.Log("Inside Inc --> "+value);
     }
     /// <summary>
     /// function to reset the arrow lenght 
