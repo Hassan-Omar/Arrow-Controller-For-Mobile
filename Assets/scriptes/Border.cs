@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// This Class Created by H.Omar to act as a border "Player lose when we reach to it "
+/// </summary>
 public class Border : MonoBehaviour
 {
     Text testTXT;

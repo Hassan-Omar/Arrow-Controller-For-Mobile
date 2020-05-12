@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-
+/// <summary>
+/// This Class Created by H.Omar to act as a goal object 
+/// </summary>
 public class Goal : MonoBehaviour
 {
     Text testTXT;
